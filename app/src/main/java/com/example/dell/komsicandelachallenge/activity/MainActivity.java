@@ -126,8 +126,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     shouldDisplayErrorPage(HIDE_ERROR_PAGE);
                     fetchUserInfo();
-                    Toast.makeText(MainActivity.this, "Retry Button Clicked",
-                            Toast.LENGTH_SHORT).show();
                 }
             });
         }
