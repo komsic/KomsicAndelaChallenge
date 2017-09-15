@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">KomsicAndelaChallenge</string>
     <string name="app_label">Lagos Java Devs</string>
+    <string name="title_activity_git_hub_user_details">GitHubUserDetailsActivity</string>
+    <string name="user_profile_url"><u>%s</u></string>
+    <string name="error_message">Oops!!! Seems you\'re offline.\n\n
+        Try:\n\n
+        \t• Turning off airplane mode\n\n
+        \t• Turning on mobile data or Wifi\n\n
+        \t• Checking the signal in your area</string>
+    <string name="profile_url">Profile URL:</string>
+    <string name="username">Username:</string>
+    <string name="retry">Retry</string>
+    <string name="placeholder">placeholder</string>
 </resources>

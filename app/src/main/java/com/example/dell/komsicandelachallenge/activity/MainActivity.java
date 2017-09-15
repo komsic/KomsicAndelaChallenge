@@ -25,39 +25,51 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressBar mProgressBar;
-
-    /** Adapter for the list of github users */
-    private GitHubUserRecyclerAdapter mAdapter;
-
-    private RecyclerView mRecyclerView;
-
-    NetworkInfo activeNetworkInfo;
-
-    LinearLayout linearLayout;
-    Button button;
-
+    //constant token to know whether to display error page.
     private static final int DISPLAY_ERROR_PAGE = 1;
     private static final int HIDE_ERROR_PAGE = 2;
+
+    //views
+    private LinearLayout linearLayout;
+    private Button button;
+    private ProgressBar mProgressBar;
+    private RecyclerView mRecyclerView;
+
+    /**
+     * Adapter for the list of github users
+     */
+    private GitHubUserRecyclerAdapter mAdapter;
+
+    //variable to determine the  connectivity state of the device
+    private NetworkInfo activeNetworkInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //initializing views
         button = (Button) findViewById(R.id.retry_button);
         linearLayout = (LinearLayout) findViewById(R.id.error_root_layout);
         mProgressBar = (ProgressBar) findViewById(R.id.loading_indicator);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+        //setting up RecyclerView
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        //these check the network state of a device
         ConnectivityManager cm = (ConnectivityManager) getApplication()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetworkInfo = cm.getActiveNetworkInfo();
+
         networkValidation();
     }
 
+    /**
+     * This is the method where the Retrofit Service is created and the API data will be downloaded
+     * and parsed on the background thread. The results will be return back to the UI thread via the
+     * onResponse or onFailure method.
+     */
     private void fetchUserInfo() {
 
         /**
@@ -70,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         userListCall.enqueue(new Callback<GitHubUserList>() {
             @Override
             public void onResponse(Call<GitHubUserList> call, Response<GitHubUserList> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     GitHubUserList userList = response.body();
                     mProgressBar.setVisibility(View.GONE);
                     prepareData(userList);
@@ -86,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * this method links the RecyclerView and Adapter together.
+     */
     private void prepareData(GitHubUserList userList) {
         mAdapter = new GitHubUserRecyclerAdapter(userList.getItems());
         mRecyclerView.setAdapter(mAdapter);
@@ -93,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * this method handles the display error of the page.
+     * this method access the connectivity state of the phone and determine whether the API call
+     * should be made.
      */
     private void networkValidation() {
 
@@ -117,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * this method handles the error display page.
+     */
     private void shouldDisplayErrorPage(int status) {
         if (status == HIDE_ERROR_PAGE) {
             button.setVisibility(View.INVISIBLE);
